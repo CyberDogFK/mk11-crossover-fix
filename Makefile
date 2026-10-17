@@ -1,13 +1,14 @@
 CC      = x86_64-w64-mingw32-gcc
 CFLAGS  = -O2 -Wall -Wno-unused-parameter
 LDFLAGS = -shared -static -s
+LIBS    = -lmfplat -lole32
 
 VERSION ?= $(shell git describe --tags --always 2>/dev/null || echo dev)
 DIST    = dist/mk11-crossover-face-fix-$(VERSION)
 
 build/xinput9_1_0.dll: src/rgb32fix.c src/xinput9_1_0.def
 	@mkdir -p build
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ src/rgb32fix.c src/xinput9_1_0.def
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ src/rgb32fix.c src/xinput9_1_0.def $(LIBS)
 
 # Release archive: the DLL plus install/uninstall scripts, ready to attach to a GitHub release.
 dist: build/xinput9_1_0.dll
